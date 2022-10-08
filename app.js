@@ -1,13 +1,16 @@
 const express = require('express');
 const mysql = require('mysql2')
 const connection = require('./database')
-const {seq} = require('./middleware/db.config')
+const {DB} = require('./middleware/db.config')
 const {Sequelize} = require('sequelize')
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
 
+//Routers
 const user = require('./routes/user.router');
+const category = require('./routes/category.router');
+const product = require("./routes/product.router");
 
 
 var app = express();
@@ -20,7 +23,9 @@ app.get("/",(req,res)=>{
 })
 
 app.use('/user',user)
-seq.authenticate().then(()=>{
+app.use('/cat',category);
+app.use('/product',product)
+DB.authenticate().then(()=>{
     console.log('database successfully connected')
 }).catch(err=>{console.log(err)})
 
